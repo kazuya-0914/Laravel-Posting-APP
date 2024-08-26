@@ -25,14 +25,15 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const app =  createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
             .use(i18n)
-            .mount(el)
-            .config.errorHandler = (err) => {
-                console.error('Error during setup:', err);
-            };
+            
+        app.config.errorHandler = (err) => {
+            console.error('Error during setup:', err);
+        };
+        app.mount(el)
     },
     progress: {
         color: '#4B5563',

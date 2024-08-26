@@ -43,7 +43,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->save();
 
-        return redirect()->route('posts.index')->with('flash_message', '投稿が完了しました。');
+        return redirect()->route('posts.vue.index')->with('flash_message', '投稿が完了しました。');
     }
 
     /**

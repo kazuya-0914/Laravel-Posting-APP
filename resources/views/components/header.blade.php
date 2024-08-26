@@ -6,15 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ $title }}</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-  <div>
+  <div class="wrapper">
     <header>
       <nav class="navbar navbar-light bg-light">
         <div class="container">
-          <a href="{{ route('posts.index') }}" class="navbar-brand">投稿アプリ</a>
+          <a href="{{ route('posts.index') }}" class="navbar-brand">投稿アプリ(Blade)</a>
         
-          <ul class="navbar-nav">
+          <ul class="navbar-nav d-flex flex-row gap-4">
+            <li class="nav-item">
+              <a href="{{ route('posts.vue.index') }}" class="nav-link">Vue.js</a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ url('admin') }}" class="nav-link">管理画面</a>
+            </li>
             <li class="nav-item">
               <a href="{{ route('logout') }}" id="logout" class="nav-link">ログアウト</a>
               <form action="{{ route('logout') }}" method="POST" id="logout-form">

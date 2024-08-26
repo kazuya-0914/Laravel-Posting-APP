@@ -24,6 +24,9 @@ const form = useForm({
 
 const submit = () => {
     form.post(route('login'), {
+        onSuccess: () => {
+            location.href = route('posts.vue.index'); // ログイン後にリダイレクト
+        },
         onFinish: () => form.reset('password'),
     });
 };

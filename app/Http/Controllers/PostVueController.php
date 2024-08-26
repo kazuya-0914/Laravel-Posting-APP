@@ -13,14 +13,21 @@ class PostVueController extends Controller
     /**
      * Display a listing of the resource.
      */
+    private $posts;
+    private $user_name;
+
+    public function __construct()
+    {
+        // 投稿一覧に表示するデータを設定
+        $this->posts = Auth::user()->posts()->orderBy('created_at', 'desc')->get();
+        $this->user_name = Auth::user()->name;
+    }
+
     public function index()
     {
-        $posts = Auth::user()->posts()->orderBy('created_at', 'desc')->get();
-        $user_name = Auth::user()->name;
-
         return Inertia::render('Posts/Index', [
-            'user_name' => $user_name,
-            'posts' => $posts,
+            'user_name' => $this->user_name,
+            'posts' => $this->posts,
         ]);
     }
 
@@ -43,7 +50,11 @@ class PostVueController extends Controller
         $post->user_id = Auth::id();
         $post->save();
 
-        return redirect()->route('posts.index')->with('flash_message', '投稿が完了しました。');
+        return Inertia::render('Posts/Index', [
+            'flash_message' => '投稿が完了しました。',
+            'user_name' => $this->user_name,
+            'posts' => $this->posts,
+        ]);
     }
 
     /**
@@ -51,7 +62,9 @@ class PostVueController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        return Inertia::render('Posts/Show', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -59,7 +72,17 @@ class PostVueController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        if ($post->user_id !== Auth::id()) {
+            return Inertia::render('Posts/Index', [
+                'error_message' => '不正なアクセスです。',
+                'user_name' => $this->user_name,
+                'posts' => $this->posts,
+            ]);
+        }
+
+        return Inertia::render('Posts/Edit', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -67,7 +90,23 @@ class PostVueController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        if ($post->user_id !== Auth::id()) {
+            return Inertia::render('Posts/Index', [
+                'error_message' => '不正なアクセスです。',
+                'user_name' => $this->user_name,
+                'posts' => $this->posts,
+            ]);
+        }
+
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->save();
+        
+        return Inertia::render('Posts/Index', [
+            'flash_message' => '投稿を編集しました。',
+            'user_name' => $this->user_name,
+            'posts' => $this->posts,
+        ]);
     }
 
     /**
@@ -75,6 +114,20 @@ class PostVueController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if ($post->user_id !== Auth::id()) {
+            return Inertia::render('Posts/Index', [
+                'error_message' => '不正なアクセスです。',
+                'user_name' => $this->user_name,
+                'posts' => $this->posts,
+            ]);
+        }
+
+        // $post->delete();
+        
+        return Inertia::render('Posts/Index', [
+            'flash_message' => '投稿を削除しました。',
+            'user_name' => $this->user_name,
+            'posts' => $this->posts,
+        ]);
     }
 }

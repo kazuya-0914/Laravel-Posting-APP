@@ -1,19 +1,31 @@
 <script setup lang="ts">
 import BaseLauout from '@/Components/BaseLayout.vue';
 import { ref } from 'vue';
-import { useForm, Link } from '@inertiajs/vue3';
+import { useForm, usePage, Link } from '@inertiajs/vue3';
 
-const heading = ref('新規投稿');
+interface PageProps {
+  post: {
+    id: number;
+    title: string;
+    content: string;
+  }
+}
 
-// フォームデータ
+const { props } = usePage<PageProps>();
+
+const posts = props.posts;
+const heading = ref('投稿編集');
+
+// フォームデータの初期化
 const form = useForm({
-  title: '',
-  content: '',
+  id: props.post.id,
+  title: props.post.title || '',
+  content: props.post.content || '',
 });
 
-// 投稿フォームの送信処理
+// フォームデータをPATCHメソッドで送信
 const submit = () => {
-  form.post(route('posts.vue.store'), {
+  form.patch(route('posts.vue.update', { post: form.id }), {
     onFinish: () => {
       if (Object.keys(form.errors).length > 0) {
         hasErrors.value = true;
@@ -56,7 +68,7 @@ const hasErrors = ref(false);
         class="w-full rounded-md block flex-1 border border-gray-300 bg-transparent py-1.5 pl-1 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6"></textarea>
       </div>
       <button type="submit"
-      class="p-2 rounded-md text-blue-500 border border-blue-500">投稿</button>
+      class="p-2 rounded-md text-blue-500 border border-blue-500">更新</button>
     </form>
   </BaseLauout>
 </template>

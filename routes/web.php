@@ -48,24 +48,17 @@ require __DIR__.'/auth.php';
 Route::get('/', [PostController::class, 'index'])->middleware(['auth', 'verified'])->name('posts.index');
 Route::resource('posts', PostController::class)->middleware(['auth', 'verified']);
 
-/*
-Route::prefix('posts')->middleware(['auth', 'verified'])->group(function () {
-    Route::get('', [PostController::class, 'index'])->name('posts.index');
-    Route::post('', [PostController::class, 'store'])->name('posts.store');
-    Route::get('create', [PostController::class, 'create'])->name('posts.create');
-    Route::get('{post}', [PostController::class, 'show'])->name('posts.show');
-});
-*/
-
 // Vue.js3バージョン
+// Route::resource('posts-vue', PostVueController::class)->middleware(['auth', 'verified']);
+
 Route::prefix('posts-vue')->middleware(['auth', 'verified'])->group(function () {
     Route::get('', [PostVueController::class, 'index'])->name('posts.vue.index');
     Route::post('', [PostVueController::class, 'store'])->name('posts.vue.store');
     Route::get('create', [PostVueController::class, 'create'])->name('posts.vue.create');
     Route::get('{post}', [PostVueController::class, 'show'])->name('posts.vue.show');
+    Route::get('{post}/edit', [PostVueController::class, 'edit'])->name('posts.vue.edit');
+    Route::patch('{post}', [PostVueController::class, 'update'])->name('posts.vue.update');
+    Route::delete('{post}', [PostVueController::class, 'destroy'])->name('posts.vue.destroy');
 });
 
 // Reactバージョン
-
-// 共通
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');

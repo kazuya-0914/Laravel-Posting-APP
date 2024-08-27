@@ -1,27 +1,31 @@
 <x-twitter :title="$title">
   <article>
     @if ($errors->any())
+    <div class="alert alert-danger">
       <ul>
         @foreach ($errors->all() as $error)
           <li>{{ $error }}</li>
         @endforeach
       </ul>
+    </div>
     @endif
 
-    <a href="{{ route('posts.index') }}">&lt; 戻る</a>
+    <div class="mb-2">
+      <a href="{{ route('posts.index') }}" class="text-decoration-none">&lt; 戻る</a>
+    </div>
 
     <form action="{{ route('posts.update', $post) }}" method="POST">
       @csrf
       @method('PATCH')
-      <div>
+      <div class="form-group mb-3">
         <label for="title">タイトル</label>
-        <input type="text" id="title" name="title" value="{{ old('title', $post->title)}}">
+        <input type="text" id="title" class="form-control" name="title" value="{{ old('title', $post->title)}}">
       </div>
-      <div>
+      <div class="form-group mb-3">
         <label for="content">本文</label>
-        <textarea id="content" name="content">{{ old('content', $post->content) }}</textarea>
+        <textarea id="content" name="content" class="form-control">{{ old('content', $post->content) }}</textarea>
       </div>
-      <button type="submit">更新</button>
+      <button type="submit" class="btn btn-outline-primary">更新</button>
     </form>
     
   </article>

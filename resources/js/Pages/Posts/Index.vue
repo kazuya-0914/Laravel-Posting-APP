@@ -25,7 +25,7 @@ const heading = ref(`${userNameValue}さんの投稿一覧`);
 const flashMessage = ref(props.flash_message);
 const errorMessage = ref(props.error_message);
 
-// 投稿の削除処理
+// 投稿データをDELETEメソッドで削除
 const deletePost = (postId: number) => {
   if (confirm('本当に削除してもよろしいですか？')) {
     router.delete(route('posts.vue.destroy', { post: postId }), {

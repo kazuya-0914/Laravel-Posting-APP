@@ -1,26 +1,30 @@
 <x-twitter :title="$title">
   <article>
     @if ($errors->any())
+    <div class="alert alert-danger">
       <ul>
         @foreach ($errors->all() as $error)
           <li>{{ $error }}</li>
         @endforeach
       </ul>
+    </div>
     @endif
 
-    <a href="{{ route('posts.index') }}">&lt; 戻る</a>
+    <div class="mb-2">
+      <a href="{{ route('posts.index') }}" class="text-decoration-none">&lt; 戻る</a>
+    </div>
 
     <form action="{{ route('posts.store') }}" method="post">
       @csrf
-      <div>
+      <div class="form-group mb-3">
         <label for="title">タイトル</label>
-        <input type="text" id="title" name="title" value="{{ old('title')}}">
+        <input type="text" id="title" class="form-control" name="title" value="{{ old('title')}}">
       </div>
-      <div>
+      <div class="form-group mb-3">
         <label for="content">本文</label>
-        <textarea id="content" name="content">{{ old('content') }}</textarea>
+        <textarea id="content" class="form-control" name="content">{{ old('content') }}</textarea>
       </div>
-      <button type="submit">投稿</button>
+      <button type="submit" class="btn btn-outline-primary">投稿</button>
     </form>
     
   </article>

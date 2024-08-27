@@ -48,7 +48,7 @@ class PostVueController extends Controller
         $post->title = $request->input('title');
         $post->content = $request->input('content');
         $post->user_id = Auth::id();
-        $post->save();
+        // $post->save();
 
         return Inertia::render('Posts/Index', [
             'flash_message' => '投稿が完了しました。',
@@ -100,7 +100,7 @@ class PostVueController extends Controller
 
         $post->title = $request->input('title');
         $post->content = $request->input('content');
-        $post->save();
+        // $post->save();
         
         return Inertia::render('Posts/Index', [
             'flash_message' => '投稿を編集しました。',
